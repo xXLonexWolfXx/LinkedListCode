@@ -6,13 +6,22 @@
 
 using namespace std;
 
+class KeyValue {
+    public:
+        KeyValue(string k, string v): key(k), value(v) {};
+        string key;
+        string value;
+};
+
 class Node{
     public:
-        Node(string input, Node* another = nullptr) : value(input), next(another){}
+        Node(string input, Node* another = nullptr);
+        Node(string k, string v, Node* another = nullptr): key(k), value(v), next(another) {};
         //Constructor builds a node with the string as it's input, and pointing to no new node
         //  by default, but enables linking together construction of multiple nodes
-        Node* next;
+        string key;
         string value;
+        Node* next;
 };
 
 class LinkedList{
@@ -23,6 +32,9 @@ class LinkedList{
         void AddHead(string value);
         void AddTail(string value);
         bool isEmpty();
+        void AddHead(KeyValue item);
+        void AddTail(KeyValue item);
+        KeyValue RemoveHead();
         string ToList();
     private:
         Node* head;

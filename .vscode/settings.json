@@ -2,11 +2,15 @@
     "files.associations": {
         "string": "cpp",
         "xstring": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "fstream": "cpp",
+        "iostream": "cpp",
+        "new": "cpp",
+        "ostream": "cpp"
     },
     "C_Cpp.default.compileCommands": [
 
         ""
     ],
-    "C_Cpp.default.compilerPath": ""
+    "C_Cpp.default.compilerPath": "C:/TDM-GCC-64/bin/gcc.exe"
 }

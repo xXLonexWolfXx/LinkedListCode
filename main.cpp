@@ -1,9 +1,10 @@
-#include "LinkedList.cpp"
+#include "StackandQueue.cpp"
+using namespace std;
 int main(){
     string input_files[]={"california.txt", "halloween calories.txt",
                     "harry potter..txt", "pokemon.txt", "programming.txt", 
                     "soft drinks.txt", "testFile.txt"};
-    //UserInput to be used for input_file selection 1-x where x < input_files.size()
+    //UserInput to be used for input_file selection 1- the size of the array input_files
     //input_files_size is the size of the array (have to use division of sizeof's to compute
     //  as the data structure array, has no .size() attribute
     int UserInput, input_files_size = sizeof(input_files)/sizeof(input_files[0]);
@@ -17,19 +18,23 @@ int main(){
         cin  >> UserInput;
     } while (UserInput < 1 || UserInput > input_files_size);
 
-    LinkedList StackLL, QueueLL; // Declaration of two Linked Lists, one "stack" and one "queue"
+// Declaration of two Linked Lists, one front-added "stack" and one back-added "queue"
+    Stack StackLL;
+    Queue QueueLL; 
     ifstream inFile(input_files[UserInput-1]);
     string textInput;
 
     while(!inFile.eof()){
         getline(inFile, textInput);
 //        cout << textInput << " Added to Lists" << endl;
-        StackLL.AddHead(textInput);
-        QueueLL.AddTail(textInput);
+        StackLL.Push(textInput);
+        QueueLL.Enqueue(textInput);
     };
 
     cout << StackLL.ToList() << endl << QueueLL.ToList();
-    cout << "Code Compiled \"Successfully\"" << endl << StackLL.About();
+    cout << "Code Compiled \"Successfully\"" << endl;
+    cout << "Type something and enter to close the application:";
+    cin >> textInput;
 
     return 0;
 }

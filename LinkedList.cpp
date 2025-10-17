@@ -1,12 +1,18 @@
 #include "LinkedList.h"
+Node::Node(string input, Node* another) {
+    int parser = input.find(":");
+    this->key = input.substr(0, parser);
+    this->value = input.substr(parser + 2);
+}
 
 string LinkedList::About(){
-    return "This code was created and \"maintained\" by Jacob McFatter\nUniversity : CSUS (Sac State)\nFall Semester of 2025 : Csc130\n";
+    return "This Code was created and \"maintained\" by Jacob McFatter\nUniversity : CSUS (Sac State)\nFall Semester of 2025 : Csc130\n";
 }
 
 void LinkedList::AddHead(string value) {
 //    reassigns head to a new node with the value-string, and pointing to the original head
-    this->head = new Node(value, this->head);
+    int parser = value.find(":");
+    this->head = new Node(value.substr(0, parser), value.substr(parser), this->head);
     if(tail == nullptr) {
         // in the instance of the first item of the list, we can set the tail equal to the head node
         tail = head;
@@ -14,14 +20,15 @@ void LinkedList::AddHead(string value) {
 }
 
 void LinkedList::AddTail(string value){
+    int parser = value.find(":");
     if(head == nullptr){
         //Pulled code from AddHead function, as when head and/or tail are null pointers <=> list is empty
-        this->head = new Node(value, this->head);
+        this->head = new Node(value.substr(0, parser), value.substr(parser), this->head);
         tail = head;
         return;
     }
     //we know that there is a head-value so we the tail can not be a null pointer as well
-    this->tail->next = new Node(value);
+    this->tail->next = new Node(value.substr(0, parser), value.substr(parser));
     this->tail = this->tail->next;
 }
 
@@ -29,6 +36,26 @@ bool LinkedList::isEmpty(){
     //if head is nullpointer, we know that the linked-list is empty, as both AddHead and Add
     //Tail functions (which goes back to AddHead) re-assigns the head (and tail) to a pointer
     return (head == nullptr);
+}
+
+void LinkedList::AddHead(KeyValue item) {
+    this->head = new Node(item.key, item.value, this->head);
+}
+
+void LinkedList::AddTail(KeyValue item) {
+    this->tail->next = new Node(item.key, item.value);
+    this->tail = this->tail->next;
+}
+
+KeyValue LinkedList::RemoveHead() {
+    if(this->isEmpty()){
+        return KeyValue("","");
+    }
+    Node* holder = this->head->next;
+    KeyValue retVal = KeyValue(this->head->key, this->head->value);
+    delete this->head;
+    this->head = holder;
+    return retVal;    
 }
 
 string LinkedList::ToList() {
@@ -40,13 +67,14 @@ string LinkedList::ToList() {
     //otherwise at least 1 item is in list, run outer program
     int t = 1;
     Node* traversal = head;
-    retString += to_string(t) + ". " + traversal->value + "\n";
+    retString += to_string(t) + ". " + traversal->key + ": " + traversal->value + "\n";
     while (traversal = traversal->next){
         //while loop terminating on a nullptr
         ++t;
-        retString += to_string(t) + ". " + traversal->value + "\n";
+        retString += to_string(t) + ". " + traversal->key + ": " + traversal->value + "\n";
     }
     //end of loop, thus retString should contain all instances of the LinkedList
+    retString += this->About();
     return retString;
 }
 

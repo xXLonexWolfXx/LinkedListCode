@@ -3,6 +3,7 @@ Node::Node(string input, Node* another) {
     int parser = input.find(":");
     this->key = input.substr(0, parser);
     this->value = input.substr(parser + 2);
+    this->next = another;
 }
 
 string LinkedList::About(){
@@ -12,30 +13,30 @@ string LinkedList::About(){
 void LinkedList::AddHead(string value) {
 //    reassigns head to a new node with the value-string, and pointing to the original head
     int parser = value.find(":");
-    this->head = new Node(value.substr(0, parser), value.substr(parser), this->head);
-    if(tail == nullptr) {
+    this->head = new Node(value.substr(0, parser), value.substr(parser + 2), this->head);
+    if(this->tail == nullptr) {
         // in the instance of the first item of the list, we can set the tail equal to the head node
-        tail = head;
+        this->tail = this->head;
     }
 }
 
 void LinkedList::AddTail(string value){
     int parser = value.find(":");
-    if(head == nullptr){
+    if(this->head == nullptr){
         //Pulled code from AddHead function, as when head and/or tail are null pointers <=> list is empty
-        this->head = new Node(value.substr(0, parser), value.substr(parser), this->head);
-        tail = head;
+        this->head = new Node(value.substr(0, parser), value.substr(parser + 2), this->head);
+        this->tail = this->head;
         return;
     }
     //we know that there is a head-value so we the tail can not be a null pointer as well
-    this->tail->next = new Node(value.substr(0, parser), value.substr(parser));
+    this->tail->next = new Node(value.substr(0, parser), value.substr(parser + 2));
     this->tail = this->tail->next;
 }
 
 bool LinkedList::isEmpty(){
     //if head is nullpointer, we know that the linked-list is empty, as both AddHead and Add
     //Tail functions (which goes back to AddHead) re-assigns the head (and tail) to a pointer
-    return (head == nullptr);
+    return (this->head == nullptr);
 }
 
 void LinkedList::AddHead(KeyValue item) {
@@ -43,6 +44,11 @@ void LinkedList::AddHead(KeyValue item) {
 }
 
 void LinkedList::AddTail(KeyValue item) {
+    if (this->head == nullptr) {
+        this->head = new Node(item.key, item.value);
+        this->tail = this->head;
+        return;
+    }
     this->tail->next = new Node(item.key, item.value);
     this->tail = this->tail->next;
 }
@@ -55,7 +61,10 @@ KeyValue LinkedList::RemoveHead() {
     KeyValue retVal = KeyValue(this->head->key, this->head->value);
     delete this->head;
     this->head = holder;
-    return retVal;    
+    if (this->head == nullptr) {
+        this->tail = nullptr;
+    }
+    return retVal;
 }
 
 string LinkedList::ToList() {
@@ -77,4 +86,3 @@ string LinkedList::ToList() {
     retString += this->About();
     return retString;
 }
-

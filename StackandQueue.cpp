@@ -38,7 +38,6 @@ void Queue::Enqueue(KeyValue item) {
 }
 
 KeyValue Queue::Dequeue() {
-    
     return this->head->RemoveHead();
 }
 
